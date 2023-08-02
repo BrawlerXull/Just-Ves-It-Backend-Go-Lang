@@ -1,15 +1,16 @@
 package router
 
 import (
-	"github.com/gorilla/mux"
+	"justvesit/controller"
 
-	"justvesit/methods"
+	"github.com/gorilla/mux"
 )
 
 func Router() *mux.Router {
 	router := mux.NewRouter()
 
-	router.HandleFunc("/", methods.Home).Methods("GET")
+	router.HandleFunc("/", controller.Home).Methods("GET")
+	router.HandleFunc("/users", controller.ShowAllUsers).Methods("GET")
 	return router
 
 }
