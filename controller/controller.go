@@ -75,3 +75,23 @@ func checkError(err error) {
 		log.Fatal(err)
 	}
 }
+func SaveMyTask(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/x-www-form-urlencode")
+	w.Header().Set("Allow-Control-Allow-Methods", "POST")
+
+	var task models.Task
+	_ = json.NewDecoder(r.Body).Decode(&task)
+	SaveTask(task)
+	json.NewEncoder(w).Encode(task)
+
+}
+func SaveTask(task models.Task) {
+
+	inserted, err := database.Collection().InsertOne(context.Background(), task)
+
+	if err != nil {
+		log.Fatal(err)
+	}
+	fmt.Println("Inserted 1 movie in db with id: ", inserted.InsertedID)
+
+}
