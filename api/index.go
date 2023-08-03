@@ -7,7 +7,7 @@ import (
 	"github.com/gorilla/mux"
 )
 
-func StartItBuddy() {
+func StartItBuddy(w http.ResponseWriter, rf *http.Request) {
 	r := mux.NewRouter()
 	r.HandleFunc("/", Handler).Methods("POST")
 
