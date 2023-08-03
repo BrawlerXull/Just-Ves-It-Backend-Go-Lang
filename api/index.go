@@ -4,10 +4,16 @@ import (
 	"justvesit/database"
 	registeredusers "justvesit/registered_users"
 	"justvesit/server"
+	"net/http"
 )
 
-func Main() {
+func MainHandler(w http.ResponseWriter, r *http.Request) {
 	database.Init()
 	registeredusers.InitializeRegisteredUsers()
 	server.StartTheServerOnPort(":4000")
+}
+
+func main() {
+	http.HandleFunc("/", MainHandler)
+	http.ListenAndServe(":4000", nil)
 }
