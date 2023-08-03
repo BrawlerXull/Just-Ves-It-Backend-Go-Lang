@@ -1,11 +1,17 @@
 package controller
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
+	"justvesit/database"
 	"justvesit/models"
 	registeredusers "justvesit/registered_users"
+	"log"
 	"net/http"
+
+	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
 func Home(w http.ResponseWriter, r *http.Request) {
@@ -40,4 +46,32 @@ func AuthenticateTheUser(w http.ResponseWriter, r *http.Request) {
 	}
 
 	json.NewEncoder(w).Encode(map[string]string{})
+}
+
+func GetAllTasks() []primitive.M {
+	cur, err := database.Collection().Find(context.Background(), bson.D{{}})
+	checkError(err)
+	var tasks []primitive.M
+
+	for cur.Next(context.Background()) {
+		var task bson.M
+		err := cur.Decode(&task)
+		if err != nil {
+			log.Fatal(err)
+		}
+		tasks = append(tasks, task)
+	}
+
+	defer cur.Close(context.Background())
+	return tasks
+}
+func GetAllMyTasks(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/x-www-form-urlencode")
+	allTasks := GetAllTasks()
+	json.NewEncoder(w).Encode(allTasks)
+}
+func checkError(err error) {
+	if err != nil {
+		log.Fatal(err)
+	}
 }

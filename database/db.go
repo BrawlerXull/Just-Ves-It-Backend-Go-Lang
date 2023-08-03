@@ -17,6 +17,10 @@ const (
 
 var collection *mongo.Collection
 
+func Collection() *mongo.Collection {
+	return collection
+}
+
 func Init() {
 	println("hello world")
 	clientOption := options.Client().ApplyURI(connectionString)
