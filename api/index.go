@@ -13,7 +13,6 @@ func MainHandler(w http.ResponseWriter, r *http.Request) {
 	server.StartTheServerOnPort(":4000")
 }
 
-func main() {
-	http.HandleFunc("/", MainHandler)
-	http.ListenAndServe(":4000", nil)
-}
+// func main() {
+
+// }
