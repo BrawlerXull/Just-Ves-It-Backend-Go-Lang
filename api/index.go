@@ -6,7 +6,7 @@ import (
 	"justvesit/server"
 )
 
-func main() {
+func Main() {
 	database.Init()
 	registeredusers.InitializeRegisteredUsers()
 	server.StartTheServerOnPort(":4000")
