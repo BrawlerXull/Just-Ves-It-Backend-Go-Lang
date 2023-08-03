@@ -15,7 +15,7 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 
 func Main() {
 	r := mux.NewRouter()
-	r.HandleFunc("/", Handler).Methods("GET")
+	r.HandleFunc("/", Handler).Methods("POST")
 
 	http.ListenAndServe(":4000", r)
 }
