@@ -4,15 +4,16 @@ import (
 	"context"
 	"fmt"
 	"log"
+	"os"
 
+	"github.com/joho/godotenv"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
 const (
-	connectionString = "mongodb+srv://chinmay:chinmay@tasks.rqbaptf.mongodb.net/?retryWrites=true&w=majority"
-	dbName           = "test"
-	collectionName   = "tasks"
+	dbName         = "test"
+	collectionName = "tasks"
 )
 
 var collection *mongo.Collection
@@ -22,6 +23,9 @@ func Collection() *mongo.Collection {
 }
 
 func Init() {
+	err := godotenv.Load()
+	checkError(err)
+	connectionString := os.Getenv("DB_STRING")
 	println("hello world")
 	clientOption := options.Client().ApplyURI(connectionString)
 	client, err := mongo.Connect(context.TODO(), clientOption)
