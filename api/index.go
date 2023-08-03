@@ -1,18 +1,21 @@
-package main
+package handler
 
 import (
-	"justvesit/database"
-	registeredusers "justvesit/registered_users"
-	"justvesit/server"
+	"justvesit/controller"
 	"net/http"
+
+	"github.com/gorilla/mux"
 )
 
-func MainHandler(w http.ResponseWriter, r *http.Request) {
-	database.Init()
-	registeredusers.InitializeRegisteredUsers()
-	server.StartTheServerOnPort(":4000")
+func Handler(w http.ResponseWriter, r *http.Request) {
+	// database.Init()
+	// registeredusers.InitializeRegisteredUsers()
+	controller.Home(w, r)
 }
 
-// func main() {
+func Main() {
+	r := mux.NewRouter()
+	r.HandleFunc("/", Handler).Methods("GET")
 
-// }
+	http.ListenAndServe(":4000", r)
+}
