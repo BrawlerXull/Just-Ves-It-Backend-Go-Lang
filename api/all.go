@@ -27,25 +27,22 @@ func All(w http.ResponseWriter, r *http.Request) {
 }
 
 func GetAllTasks() []primitive.M {
+	database.Init()
 	cur, err := database.Collection().Find(context.Background(), bson.D{{}})
-	checkError(err)
-	var tasks []primitive.M
+	if err != nil {
+		log.Fatal("Error finding tasks:", err)
+		return nil
+	}
+	defer cur.Close(context.Background())
 
+	var tasks []primitive.M
 	for cur.Next(context.Background()) {
 		var task bson.M
 		err := cur.Decode(&task)
 		if err != nil {
-			log.Fatal(err)
+			log.Fatal("Error decoding task:", err)
 		}
 		tasks = append(tasks, task)
 	}
-
-	defer cur.Close(context.Background())
 	return tasks
-}
-
-func checkError(err error) {
-	if err != nil {
-		log.Fatal(err)
-	}
 }
