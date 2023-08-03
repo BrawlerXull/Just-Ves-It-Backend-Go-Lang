@@ -1,15 +1,17 @@
 package hello
 
 import (
+	"encoding/json"
 	"fmt"
 	"net/http"
-	"time"
 )
 
 func Hello(w http.ResponseWriter, r *http.Request) {
 	if r.Method == http.MethodGet {
-		currentTime := time.Now().Format(time.RFC850)
-		fmt.Fprint(w, currentTime)
+		fmt.Println("welcome to home")
+		w.Header().Set("Content-Type", "application/json")
+		json.NewEncoder(w).Encode(map[string]string{"message": "Hello"})
+		return
 	} else if r.Method == http.MethodPost {
 		fmt.Fprint(w, "Received a POST request to /api/date")
 	} else {
