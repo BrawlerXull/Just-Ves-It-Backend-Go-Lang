@@ -18,7 +18,6 @@ func Home(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("welcome to home")
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(map[string]string{"message": "Hello"})
-	return
 }
 
 func ShowAllUsers(w http.ResponseWriter, r *http.Request) {
@@ -65,16 +64,19 @@ func GetAllTasks() []primitive.M {
 	defer cur.Close(context.Background())
 	return tasks
 }
+
 func GetAllMyTasks(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "application/x-www-form-urlencode")
+	w.Header().Set("Content-Type", "application/json")
 	allTasks := GetAllTasks()
 	json.NewEncoder(w).Encode(allTasks)
 }
+
 func checkError(err error) {
 	if err != nil {
 		log.Fatal(err)
 	}
 }
+
 func SaveMyTask(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/x-www-form-urlencode")
 	w.Header().Set("Allow-Control-Allow-Methods", "POST")
@@ -83,8 +85,8 @@ func SaveMyTask(w http.ResponseWriter, r *http.Request) {
 	_ = json.NewDecoder(r.Body).Decode(&task)
 	SaveTask(task)
 	json.NewEncoder(w).Encode(task)
-
 }
+
 func SaveTask(task models.Task) {
 
 	inserted, err := database.Collection().InsertOne(context.Background(), task)
@@ -93,5 +95,4 @@ func SaveTask(task models.Task) {
 		log.Fatal(err)
 	}
 	fmt.Println("Inserted 1 movie in db with id: ", inserted.InsertedID)
-
 }
