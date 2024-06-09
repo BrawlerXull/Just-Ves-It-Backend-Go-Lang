@@ -20,8 +20,7 @@ func Collection() *mongo.Collection {
 	return collection
 }
 
-func Init() {
-	connectionString := "mongodb+srv://chinmay:chinmay@tasks.rqbaptf.mongodb.net/?retryWrites=true&w=majority"
+func Init(connectionString string) {
 	println("hello world")
 	clientOption := options.Client().ApplyURI(connectionString)
 	client, err := mongo.Connect(context.TODO(), clientOption)
